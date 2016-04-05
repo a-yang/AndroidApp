@@ -17,7 +17,7 @@ public class ToyList {
 
     public ToyList() {
     }
-
+/*
     public ToyList(byte[] byteArray, int length) throws IOException{
         ByteBuffer buffer = ByteBuffer.wrap(byteArray);
         int cursor = 0;
@@ -93,6 +93,6 @@ public class ToyList {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
 }

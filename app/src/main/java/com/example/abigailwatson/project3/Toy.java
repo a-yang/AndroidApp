@@ -20,7 +20,7 @@ public class Toy {
 
     public Toy() {
     }
-
+/*
     public Toy(String toyName, int price, Bitmap image) {
         this.toyName = toyName;
         this.image = image;
@@ -103,5 +103,5 @@ public class Toy {
             e.printStackTrace(System.out);
         }
         return baos.toByteArray();
-    }
+    }*/
 }
