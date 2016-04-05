@@ -76,23 +76,27 @@ public class SearchActivity extends AppCompatActivity {
             BufferedReader bufferReader = new BufferedReader(new InputStreamReader(textUrl.openStream()));
             String StringBuffer;
             String stringText = "";
-            while ((StringBuffer = bufferReader.readLine()) != null) {
-                stringText += StringBuffer;
+            ToyList finalToyList = new ToyList();
+            while ((StringBuffer = bufferReader.readLine())!=null) {
+                stringText = StringBuffer;
+                byte[] toydata = stringText.getBytes();
+                Toy toAdd = new Toy(toydata);
+                finalToyList.addToy(toAdd);
             }
+
             bufferReader.close();
             textMsg.setText(stringText);
         } catch (MalformedURLException e) {
-             //TODO Auto-generated catch block
+            // TODO Auto-generated catch block
             e.printStackTrace();
             textMsg.setText(e.toString());
         } catch (IOException e) {
-             //TODO Auto-generated catch block
+            // TODO Auto-generated catch block
             e.printStackTrace();
             textMsg.setText(e.toString());
         }
 
         textPrompt.setText("Finished!");
-        startActivity(new Intent(this, SearchActivity.class));
 
     }*/
     }
