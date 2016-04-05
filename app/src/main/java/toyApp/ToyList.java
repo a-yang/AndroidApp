@@ -30,7 +30,7 @@ public class ToyList {
             Toy toy = new Toy (toyBuffer);
 
             toyList.add(toy);
-            cursor += Integer.byteValue() + toyLength;
+            cursor += 4 + toyLength;
         }
     }
 
@@ -59,7 +59,7 @@ public class ToyList {
     }
 
     void putIntToByteArray(int number, ByteArrayOutputStream baos) throws IOException {
-        ByteBuffer b = ByteBuffer.allocate(Integer.byteValue());
+        ByteBuffer b = ByteBuffer.allocate(4);
         b.putInt(number);
         baos.write(b.array());
     }
