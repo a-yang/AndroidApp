@@ -15,5 +15,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="@string/intro"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_above="@+id/fab"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_toys"
+        android:id="@+id/fab"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:onClick="startSearch"/>
+
 </RelativeLayout>
