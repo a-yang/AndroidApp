@@ -2,7 +2,7 @@
  * Created by abigailwatson on 3/30/16.
  */
 
-package toyApp;
+package com.example.abigailwatson.project3;
 
 //import java.awt.image.BufferedImage;
 
