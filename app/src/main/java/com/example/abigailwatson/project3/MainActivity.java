@@ -43,12 +43,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-<<<<<<< HEAD
     public void startSearch(View view) {
         //Do something in response to the button
         startActivity(new Intent(this, SearchActivity.class));
     }
-=======
 
->>>>>>> 7fb626e234d781404dd3af357d9f53453361d860
 }
