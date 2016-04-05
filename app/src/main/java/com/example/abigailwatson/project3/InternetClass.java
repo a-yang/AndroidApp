@@ -5,6 +5,7 @@ package com.example.abigailwatson.project3;
  */
 
         import java.io.BufferedReader;
+        import java.io.FileInputStream;
         import java.io.IOException;
         import java.io.InputStreamReader;
         import java.net.MalformedURLException;
@@ -35,9 +36,14 @@ public class InternetClass extends Activity {
             BufferedReader bufferReader = new BufferedReader(new InputStreamReader(textUrl.openStream()));
             String StringBuffer;
             String stringText = "";
-            while ((StringBuffer = bufferReader.readLine()) != null) {
-                stringText += StringBuffer;
+            ToyList finalToyList = new ToyList();
+            while ((StringBuffer = bufferReader.readLine())!=null) {
+                stringText = StringBuffer;
+                byte[] toydata = stringText.getBytes();
+                Toy toAdd = new Toy(toydata);
+                finalToyList.addToy(toAdd);
             }
+
             bufferReader.close();
             textMsg.setText(stringText);
         } catch (MalformedURLException e) {
