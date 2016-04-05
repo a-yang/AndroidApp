@@ -2,13 +2,11 @@
  * Created by abigailwatson on 3/30/16.
  */
 
-package toyApp;
+package com.example.abigailwatson.project3;
 
 //import java.awt.image.BufferedImage;
 
 import android.graphics.*;
-import android.media.*;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -53,9 +51,13 @@ public class Toy {
 
     public int getSizeInBytes() {
         int size = 0;
-        size += Integer.byteValue() + toyName.length();
-        size += Integer.byteValue();
-        size += Integer.byteValue() + getImageSize();
+        try {
+        size += 4 + toyName.length();
+        size += 4;
+            size += 4 + getImageSize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return size;
     }
@@ -72,19 +74,17 @@ public class Toy {
         return image;
     }
 
-    public int getImageSize() {
+    public int getImageSize() throws IOException {
         ByteArrayOutputStream baos=new ByteArrayOutputStream();
-        try {
-            ImageWriter.write(image, "jpg", baos);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        Bitmap bmp = image;
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
         return baos.toByteArray().length;
     }
 
     void putIntToByteArray(int number, ByteArrayOutputStream baos) throws IOException {
-        ByteBuffer b = ByteBuffer.allocate(Integer.byteValue());
+        ByteBuffer b = ByteBuffer.allocate(4);
         b.putInt(number);
         baos.write(b.array());
     }
@@ -96,7 +96,8 @@ public class Toy {
             baos.write(toyName.getBytes());
             putIntToByteArray(price, baos);
             putIntToByteArray(getImageSize(), baos);
-            ImageWriter.write(image, "jpg", baos);
+            Bitmap bmp = image;
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         }
         catch (IOException e) {
             e.printStackTrace(System.out);

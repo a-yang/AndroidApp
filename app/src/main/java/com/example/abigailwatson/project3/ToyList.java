@@ -2,14 +2,13 @@
  * Created by abigailwatson on 3/30/16.
  */
 
-package toyApp;
+package com.example.abigailwatson.project3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.lang.Integer;
 
 
 public class ToyList {
@@ -30,7 +29,7 @@ public class ToyList {
             Toy toy = new Toy (toyBuffer);
 
             toyList.add(toy);
-            cursor += Integer.byteValue() + toyLength;
+            cursor += 4 + toyLength;
         }
     }
 
@@ -59,7 +58,7 @@ public class ToyList {
     }
 
     void putIntToByteArray(int number, ByteArrayOutputStream baos) throws IOException {
-        ByteBuffer b = ByteBuffer.allocate(Integer.byteValue());
+        ByteBuffer b = ByteBuffer.allocate(4);
         b.putInt(number);
         baos.write(b.array());
     }
