@@ -28,7 +28,6 @@ public class SearchActivity extends AppCompatActivity {
 
     public void goToScreenOne(View view) {
         startActivity(new Intent(this, MainActivity.class));
-
     }
 
 

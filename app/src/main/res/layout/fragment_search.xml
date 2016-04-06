@@ -46,5 +46,14 @@
         android:layout_gravity="right|bottom"
         android:layout_marginBottom="60dp"
         android:gravity="center" />
+
+    <ImageView
+        android:id="@+id/cart"
+        android:layout_width="94dp"
+        android:layout_height="94dp"
+        android:src="@mipmap/shopping_cart"
+        android:background="@null"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="20dp"/>
 </FrameLayout>
 
