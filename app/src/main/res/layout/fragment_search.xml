@@ -42,7 +42,7 @@
         android:text="@string/complete_purchase"
         android:id="@+id/purchase"
         android:clickable="true"
-        android:onClick="goToScreenOne"
+        android:onClick="completePurchase"
         android:layout_gravity="right|bottom"
         android:layout_marginBottom="60dp"
         android:gravity="center" />
