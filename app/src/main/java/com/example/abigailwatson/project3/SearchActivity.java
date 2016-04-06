@@ -7,7 +7,18 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import android.os.AsyncTask;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
 import java.net.URL;
 
 public class SearchActivity extends AppCompatActivity {
@@ -37,14 +48,19 @@ public class SearchActivity extends AppCompatActivity {
         protected ToyList openTextSource(String ... url) {
             URL textUrl;
             ToyList toyList = new ToyList();
-            /*try {
+            try {
                 textUrl = new URL(textSource);
                 BufferedReader bufferReader = new BufferedReader(new InputStreamReader(textUrl.openStream()));
                 String StringBuffer;
                 String stringText = "";
-                while ((StringBuffer = bufferReader.readLine()) != null) {
-                    stringText += StringBuffer;
+                ToyList finalToyList = new ToyList();
+                while ((StringBuffer = bufferReader.readLine())!=null) {
+                    stringText = StringBuffer;
+                    byte[] toydata = stringText.getBytes();
+                    Toy toAdd = new Toy(toydata);
+                    finalToyList.addToy(toAdd);
                 }
+
                 bufferReader.close();
             } catch (MalformedURLException e) {
                 //TODO Auto-generated catch block
@@ -52,7 +68,7 @@ public class SearchActivity extends AppCompatActivity {
             } catch (IOException e) {
                 //TODO Auto-generated catch block
                 e.printStackTrace();
-            }*/
+            }
             return toyList;
         }
 
