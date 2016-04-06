@@ -3,6 +3,7 @@ package com.example.abigailwatson.project3;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void startSearch(View view) {
         //Do something in response to the button
+
         startActivity(new Intent(this, SearchActivity.class));
     }
+
 
 }
