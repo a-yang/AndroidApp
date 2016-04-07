@@ -6,6 +6,7 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/list_of_toys"
         android:layout_width="match_parent"
@@ -16,44 +17,62 @@
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
         android:gravity="center"
-        android:layout_gravity="right|top" />
+        android:layout_gravity="center_horizontal|top"
+        android:longClickable="true"/>
 
-    <TextView
-        android:layout_width="111dp"
-        android:layout_height="41dp"
-        android:text="@string/hello_blank_fragment"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="120dp"
-        android:gravity="center" />
+    <FrameLayout
+        android:id="@+id/targetlayout"
+        android:layout_width="378dp"
+        android:layout_height="134dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal|bottom">
 
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel_search"
-        android:id="@+id/cancel"
-        android:clickable="true"
-        android:onClick="goToScreenOne"
-        android:layout_gravity="left|bottom"
-        android:layout_marginBottom="60dp"/>
+        <ImageView
+            android:id="@+id/cart"
+            android:layout_width="94dp"
+            android:layout_height="94dp"
+            android:src="@mipmap/shopping_cart"
+            android:background="@null"
+            android:layout_gravity="center_horizontal|bottom" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:text="@string/complete_purchase"
-        android:id="@+id/purchase"
-        android:clickable="true"
-        android:onClick="completePurchase"
-        android:layout_gravity="right|bottom"
-        android:layout_marginBottom="60dp"
-        android:gravity="center" />
 
-    <ImageView
-        android:id="@+id/cart"
-        android:layout_width="94dp"
-        android:layout_height="94dp"
-        android:src="@mipmap/shopping_cart"
-        android:background="@null"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="20dp"/>
+        <TextView
+            android:layout_width="111dp"
+            android:layout_height="41dp"
+            android:text="@string/hello_blank_fragment"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginBottom="120dp"
+            android:gravity="center" />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_search"
+            android:id="@+id/cancel"
+            android:clickable="true"
+            android:onClick="goToScreenOne"
+            android:layout_gravity="left|center_vertical" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:text="@string/complete_purchase"
+            android:id="@+id/purchase"
+            android:clickable="true"
+            android:onClick="completePurchase"
+            android:layout_gravity="right|center_vertical"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/comments"
+            android:layout_width="104dp"
+            android:layout_height="41dp"
+            android:text="@string/hello_blank_fragment"
+            android:layout_gravity="right|top"
+            android:layout_marginBottom="120dp"
+            android:gravity="center" />
+    </FrameLayout>
+
+
 </FrameLayout>
-
