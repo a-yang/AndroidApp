@@ -19,15 +19,17 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        new InternetClass().execute(textSource);
+
         setContentView(R.layout.activity_search);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        new InternetClass().execute(textSource);
     }
 
     public void goToScreenOne(View view) {
-        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
 
