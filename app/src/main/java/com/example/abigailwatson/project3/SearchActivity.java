@@ -1,23 +1,15 @@
 package com.example.abigailwatson.project3;
 
-import android.content.Intent;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import android.os.AsyncTask;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TextView;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import android.widget.ListView;
@@ -28,9 +20,7 @@ import android.widget.FrameLayout;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.TextView;
 import android.view.View.DragShadowBuilder;
-
 
 
 public class SearchActivity extends AppCompatActivity {
@@ -159,31 +149,74 @@ public class SearchActivity extends AppCompatActivity {
             return openTextSource(url);
         }
 
-        protected ToyList openTextSource(String ... url) {
-            URL textUrl;
+        protected ToyList openTextSource(String ... url1) {
+
+            ByteArrayOutputStream bos;
+            HttpURLConnection urlConnection = null;
+            URL url = null;
             ToyList toyList = new ToyList();
             try {
-                textUrl = new URL(textSource);
-                BufferedReader bufferReader = new BufferedReader(new InputStreamReader(textUrl.openStream()));
-                String StringBuffer;
-                String stringText = "";
-                ToyList finalToyList = new ToyList();
-                while ((StringBuffer = bufferReader.readLine())!=null) {
-                    stringText = StringBuffer;
-                    byte[] toydata = stringText.getBytes();
-                    Toy toAdd = new Toy(toydata);
-                    finalToyList.addToy(toAdd);
-                }
+                url = new URL(textSource);
 
-                bufferReader.close();
-            } catch (MalformedURLException e) {
-                //TODO Auto-generated catch block
-                e.printStackTrace();
+
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+
+                // give it 15 seconds to respond
+                urlConnection.setReadTimeout(15 * 1000);
+                urlConnection.connect();
+
+                BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                bos = readStream(in);
+
+                byte[] bytes = bos.toByteArray();
+                toyList = new ToyList(bytes, bytes.length);
+
             } catch (IOException e) {
-                //TODO Auto-generated catch block
                 e.printStackTrace();
+
             }
             return toyList;
+        }
+//            URL textUrl;
+//            ToyList toyList = new ToyList();
+//            try {
+//                textUrl = new URL(textSource);
+//                BufferedReader bufferReader = new BufferedReader(new InputStreamReader(textUrl.openStream()));
+//                String StringBuffer;
+//                String stringText = "";
+//                ToyList finalToyList = new ToyList();
+//                while ((StringBuffer = bufferReader.readLine())!=null) {
+//                    stringText = StringBuffer;
+//                    byte[] toydata = stringText.getBytes();
+//                    Toy toAdd = new Toy(toydata);
+//                    finalToyList.addToy(toAdd);
+//                }
+//
+//                bufferReader.close();
+//            } catch (MalformedURLException e) {
+//                //TODO Auto-generated catch block
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                //TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            return toyList;
+
+        private ByteArrayOutputStream readStream(BufferedInputStream is) {
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            try {
+
+                int i = is.read();
+                while(i != -1) {
+                    bo.write(i);
+                    i = is.read();
+                }
+                return bo;
+            } catch (IOException e) {
+                return bo;
+            }
+
         }
 
         protected void onPostExecute(ToyList toyList) {
