@@ -10,10 +10,13 @@ import android.graphics.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import android.os.Parcelable;
+import android.os.Parcel;
 
 
 
-public class Toy {
+
+public class Toy implements Parcelable {
     String toyName = null;
     Bitmap image = null;
     int price = 0;
@@ -104,4 +107,35 @@ public class Toy {
         }
         return baos.toByteArray();
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(toyName);
+        dest.writeInt(price);
+    }
+
+    public void readFromParcel(Parcel in) {
+        toyName = in.readString();
+        price = in.readInt();
+    }
+
+    public int describeContents() {return 0;}
+
+    public static Creator<Toy> CREATOR = new Creator<Toy>() {
+
+        @Override
+        public Toy createFromParcel(Parcel source) {
+            Toy oneToy = new Toy();
+            oneToy.toyName = source.readString();
+            oneToy.price = source.readInt();
+            return oneToy;
+        }
+
+        @Override
+        public Toy[] newArray(int size) {
+            return new Toy[size];
+        }
+
+    };
+
 }

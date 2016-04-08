@@ -35,11 +35,15 @@ public class SearchActivity extends AppCompatActivity {
     private  FrameLayout targetLayout;
     private ListView lv;
     private android.widget.FrameLayout.LayoutParams layoutParams;
-    ArrayList<String> names;
+    private ArrayList<String> names;
 
     TextView comments;
 
     String commentMsg;
+
+    private ToyList shoppingCart = new ToyList();
+    private ArrayList<String> fakeShoppingCart = new ArrayList<String>();
+    MyDragEventListener myDragEventListener = new MyDragEventListener();
 
 
     @Override
@@ -63,7 +67,6 @@ public class SearchActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_search);
 
-        comments = (TextView)findViewById(R.id.comments);
         lv = (ListView) findViewById(R.id.list_of_toys);
 
         targetLayout = (FrameLayout)findViewById(R.id.targetlayout);
@@ -76,6 +79,8 @@ public class SearchActivity extends AppCompatActivity {
 
         lv.setAdapter(arrayAdapter);
         lv.setOnItemLongClickListener(listSourceItemLongClickListener);
+        lv.setOnDragListener(myDragEventListener);
+        targetLayout.setOnDragListener(myDragEventListener);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,7 +102,7 @@ public class SearchActivity extends AppCompatActivity {
             ClipData dragData = new ClipData((CharSequence) v.getTag(),
                     clipDescription,
                     item);
-            DragShadowBuilder myShadow = new DragShadowBuilder(v);
+            DragShadowBuilder myShadow = new MyDragShadowBuilder(v);
 
             v.startDrag(dragData, //ClipData
                     myShadow,  //View.DragShadowBuilder
@@ -136,6 +141,10 @@ public class SearchActivity extends AppCompatActivity {
         finish();
     }
 
+    public void completePurchase(View view) {
+        startActivity(new Intent(this, PurchaseActivity.class).putExtra("toyList", shoppingCart));
+    }
+
 
     protected class MyDragEventListener implements View.OnDragListener {
 
@@ -149,41 +158,43 @@ public class SearchActivity extends AppCompatActivity {
                     if (event.getClipDescription()
                             .hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
                     {
-                        commentMsg += v.getTag()
+                        commentMsg = v.getTag()
                                 + " : ACTION_DRAG_STARTED accepted.\n";
                         comments.setText(commentMsg);
                         return true; //Accept
                     }else{
-                        commentMsg += v.getTag()
+                        commentMsg = v.getTag()
                                 + " : ACTION_DRAG_STARTED rejected.\n";
                         comments.setText(commentMsg);
                         return false; //reject
                     }
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    commentMsg += v.getTag() + " : ACTION_DRAG_ENTERED.\n";
+                    commentMsg = v.getTag() + " : ACTION_DRAG_ENTERED.\n";
                     comments.setText(commentMsg);
                     return true;
                 case DragEvent.ACTION_DRAG_LOCATION:
-                    commentMsg += v.getTag() + " : ACTION_DRAG_LOCATION - "
+                    commentMsg = v.getTag() + " : ACTION_DRAG_LOCATION - "
                             + event.getX() + " : " + event.getY() + "\n";
                     comments.setText(commentMsg);
                     return true;
                 case DragEvent.ACTION_DRAG_EXITED:
-                    commentMsg += v.getTag() + " : ACTION_DRAG_EXITED.\n";
+                    commentMsg = v.getTag() + " : ACTION_DRAG_EXITED.\n";
                     comments.setText(commentMsg);
                     return true;
                 case DragEvent.ACTION_DROP:
                     // Gets the item containing the dragged data
                     ClipData.Item item = event.getClipData().getItemAt(0);
 
-                    commentMsg += v.getTag() + " : ACTION_DROP" + "\n";
+                    commentMsg = v.getTag() + " : ACTION_DROP" + "\n";
                     comments.setText(commentMsg);
 
                     //If apply only if drop on buttonTarget
                     if(v == targetLayout){
                         String droppedItem = item.getText().toString();
-
-                        commentMsg += "Dropped item - "
+                        Toy oneToy = new Toy();
+                        oneToy.toyName = droppedItem;
+                        shoppingCart.addToy(oneToy);
+                        commentMsg = "Dropped item - "
                                 + droppedItem + "\n";
                         comments.setText(commentMsg);
 
@@ -196,15 +207,15 @@ public class SearchActivity extends AppCompatActivity {
 
                 case DragEvent.ACTION_DRAG_ENDED:
                     if (event.getResult()){
-                        commentMsg += v.getTag() + " : ACTION_DRAG_ENDED - success.\n";
+                        commentMsg = v.getTag() + " : ACTION_DRAG_ENDED - success.\n";
                         comments.setText(commentMsg);
                     } else {
-                        commentMsg += v.getTag() + " : ACTION_DRAG_ENDED - fail.\n";
+                        commentMsg = v.getTag() + " : ACTION_DRAG_ENDED - fail.\n";
                         comments.setText(commentMsg);
                     };
                     return true;
                 default: //unknown case
-                    commentMsg += v.getTag() + " : UNKNOWN !!!\n";
+                    commentMsg = v.getTag() + " : UNKNOWN !!!\n";
                     comments.setText(commentMsg);
                     return false;
 
