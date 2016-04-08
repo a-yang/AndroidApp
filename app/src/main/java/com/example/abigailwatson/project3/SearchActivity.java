@@ -21,6 +21,11 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.view.View.DragShadowBuilder;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 
 
 public class SearchActivity extends AppCompatActivity {
@@ -28,9 +33,18 @@ public class SearchActivity extends AppCompatActivity {
     public ToyList buttons;
     final String textSource = "http://people.cs.georgetown.edu/~wzhou/toy.data";
 
+    private  FrameLayout targetLayout;
     private ListView lv;
     private android.widget.FrameLayout.LayoutParams layoutParams;
-    ArrayList<String> names;
+    private ArrayList<String> names;
+
+    TextView comments;
+
+    String commentMsg;
+
+    private ToyList shoppingCart = new ToyList();
+    private ArrayList<String> fakeShoppingCart = new ArrayList<String>();
+    MyDragEventListener myDragEventListener = new MyDragEventListener();
 
 
     @Override
@@ -56,87 +70,160 @@ public class SearchActivity extends AppCompatActivity {
 
         lv = (ListView) findViewById(R.id.list_of_toys);
 
+        targetLayout = (FrameLayout)findViewById(R.id.targetlayout);
+        comments = (TextView)findViewById(R.id.comments);
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
                 names);
 
         lv.setAdapter(arrayAdapter);
+        lv.setOnItemLongClickListener(listSourceItemLongClickListener);
+        lv.setOnDragListener(myDragEventListener);
+        targetLayout.setOnDragListener(myDragEventListener);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> l, View v,
-                                           int position, long id) {
+    }
 
-                //Selected item is passed as item in dragData
-                ClipData.Item item = new ClipData.Item(names.get(position));
+    OnItemLongClickListener listSourceItemLongClickListener
+            = new OnItemLongClickListener(){
 
-                String[] clipDescription = {ClipDescription.MIMETYPE_TEXT_PLAIN};
-                ClipData dragData = new ClipData((CharSequence) v.getTag(),
-                        clipDescription,
-                        item);
-                DragShadowBuilder myShadow = new DragShadowBuilder(v);
+        @Override
+        public boolean onItemLongClick(AdapterView<?> l, View v,
+                                       int position, long id) {
 
-                v.startDrag(dragData, //ClipData
-                        myShadow,  //View.DragShadowBuilder
-                        names.get(position),  //Object myLocalState
-                        0);    //flags
+            //Selected item is passed as item in dragData
+            ClipData.Item item = new ClipData.Item(names.get(position));
 
-                return true;
-            }});
+            String[] clipDescription = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+            ClipData dragData = new ClipData((CharSequence) v.getTag(),
+                    clipDescription,
+                    item);
+            DragShadowBuilder myShadow = new MyDragShadowBuilder(v);
 
-        lv.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
+            v.startDrag(dragData, //ClipData
+                    myShadow,  //View.DragShadowBuilder
+                    names.get(position),  //Object myLocalState
+                    0);    //flags
 
-                        // Do nothing
-                        break;
+            return true;
+        }};
 
-                    case DragEvent.ACTION_DRAG_ENTERED:
-                        int x_cord = (int) event.getX();
-                        int y_cord = (int) event.getY();
-                        break;
+    private static class MyDragShadowBuilder extends View.DragShadowBuilder {
+        private static Drawable shadow;
 
-                    case DragEvent.ACTION_DRAG_EXITED:
-                        x_cord = (int) event.getX();
-                        y_cord = (int) event.getY();
-                        layoutParams.leftMargin = x_cord;
-                        layoutParams.topMargin = y_cord;
-                        v.setLayoutParams(layoutParams);
-                        break;
+        public MyDragShadowBuilder(View v) {
+            super(v);
+            shadow = new ColorDrawable(Color.LTGRAY);
+        }
 
-                    case DragEvent.ACTION_DRAG_LOCATION:
-                        x_cord = (int) event.getX();
-                        y_cord = (int) event.getY();
-                        break;
+        @Override
+        public void onProvideShadowMetrics (Point size, Point touch){
+            int width = getView().getWidth();
+            int height = getView().getHeight();
 
-                    case DragEvent.ACTION_DRAG_ENDED:
+            shadow.setBounds(0, 0, width, height);
+            size.set(width, height);
+            touch.set(width / 2, height / 2);
+        }
 
-                        // Do nothing
-                        break;
-
-                    case DragEvent.ACTION_DROP:
-                        // Do nothing
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
+        @Override
+        public void onDrawShadow(Canvas canvas) {
+            shadow.draw(canvas);
+        }
 
     }
 
     public void goToScreenOne(View view) {
         finish();
     }
+
+    public void completePurchase(View view) {
+        startActivity(new Intent(this, PurchaseActivity.class).putExtra("toyList", shoppingCart));
+    }
+
+
+    protected class MyDragEventListener implements View.OnDragListener {
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            final int action = event.getAction();
+
+            switch(action) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    //All involved view accept ACTION_DRAG_STARTED for MIMETYPE_TEXT_PLAIN
+                    if (event.getClipDescription()
+                            .hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
+                    {
+                        commentMsg = v.getTag()
+                                + " : ACTION_DRAG_STARTED accepted.\n";
+                        comments.setText(commentMsg);
+                        return true; //Accept
+                    }else{
+                        commentMsg = v.getTag()
+                                + " : ACTION_DRAG_STARTED rejected.\n";
+                        comments.setText(commentMsg);
+                        return false; //reject
+                    }
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    commentMsg = v.getTag() + " : ACTION_DRAG_ENTERED.\n";
+                    comments.setText(commentMsg);
+                    return true;
+                case DragEvent.ACTION_DRAG_LOCATION:
+                    commentMsg = v.getTag() + " : ACTION_DRAG_LOCATION - "
+                            + event.getX() + " : " + event.getY() + "\n";
+                    comments.setText(commentMsg);
+                    return true;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    commentMsg = v.getTag() + " : ACTION_DRAG_EXITED.\n";
+                    comments.setText(commentMsg);
+                    return true;
+                case DragEvent.ACTION_DROP:
+                    // Gets the item containing the dragged data
+                    ClipData.Item item = event.getClipData().getItemAt(0);
+
+                    commentMsg = v.getTag() + " : ACTION_DROP" + "\n";
+                    comments.setText(commentMsg);
+
+                    //If apply only if drop on buttonTarget
+                    if(v == targetLayout){
+                        String droppedItem = item.getText().toString();
+                        Toy oneToy = new Toy();
+                        oneToy.toyName = droppedItem;
+                        shoppingCart.addToy(oneToy);
+                        commentMsg = "Dropped item - "
+                                + droppedItem + "\n";
+                        comments.setText(commentMsg);
+
+
+                        return true;
+                    }else{
+                        return false;
+                    }
+
+
+                case DragEvent.ACTION_DRAG_ENDED:
+                    if (event.getResult()){
+                        commentMsg = v.getTag() + " : ACTION_DRAG_ENDED - success.\n";
+                        comments.setText(commentMsg);
+                    } else {
+                        commentMsg = v.getTag() + " : ACTION_DRAG_ENDED - fail.\n";
+                        comments.setText(commentMsg);
+                    };
+                    return true;
+                default: //unknown case
+                    commentMsg = v.getTag() + " : UNKNOWN !!!\n";
+                    comments.setText(commentMsg);
+                    return false;
+
+            }
+        }
+    }
+
 
 
 

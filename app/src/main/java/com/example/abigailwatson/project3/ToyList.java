@@ -4,14 +4,18 @@
 
 package com.example.abigailwatson.project3;
 
+import android.os.Parcelable;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
+import android.os.Parcel;
 
 
-public class ToyList {
+public class ToyList implements Parcelable {
 
     private ArrayList<Toy> toyList = new ArrayList<Toy>();
 
@@ -94,5 +98,29 @@ public class ToyList {
         }
 
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(toyList);
+    }
+
+
+    public int describeContents() {return 0;}
+
+    public static Creator<ToyList> CREATOR = new Creator<ToyList>() {
+
+        @Override
+        public ToyList createFromParcel(Parcel source) {
+            ToyList toyList = new ToyList();
+            toyList.toyList = source.readArrayList(Toy.class.getClassLoader());
+            return toyList;
+        }
+
+        @Override
+        public ToyList[] newArray(int size) {
+            return new ToyList[size];
+        }
+
+    };
 
 }
