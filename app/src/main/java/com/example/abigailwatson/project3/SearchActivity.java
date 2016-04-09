@@ -12,7 +12,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.view.DragEvent;
@@ -23,7 +22,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.view.View.DragShadowBuilder;
 import android.content.Intent;
 import android.app.ProgressDialog;
-import android.widget.ArrayAdapter;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -32,12 +30,8 @@ public class SearchActivity extends AppCompatActivity {
 
     private  FrameLayout targetLayout;
     private ListView lv;
-    private android.widget.FrameLayout.LayoutParams layoutParams;
-    private ArrayList<String> names = new ArrayList<String>();
-
 
     private ToyList shoppingCart = new ToyList();
-    private ArrayList<String> fakeShoppingCart = new ArrayList<String>();
     MyDragEventListener myDragEventListener = new MyDragEventListener();
 
 
@@ -47,13 +41,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         new InternetClass(this).execute(textSource);
-
-        names.add("Angela");
-        names.add("Mannhi");
-        names.add("Jenn");
-        names.add("Izzy");
-        names.add("Annette");
-        names.add("Vicky");
 
         setContentView(R.layout.activity_search);
 
@@ -99,16 +86,6 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(new Intent(this, PurchaseActivity.class).putExtra("toyList", shoppingCart));
     }
 
-    public  void weblink(View view){
-        goToUrl ( "http://googlemaps.com/");
-    }
-
-    private void goToUrl (String url) {
-        Uri uriUrl = Uri.parse(url);
-        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-        startActivity(launchBrowser);
-
-    }
 
     protected class MyDragEventListener implements View.OnDragListener {
 

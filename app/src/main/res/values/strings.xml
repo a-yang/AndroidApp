@@ -9,6 +9,8 @@
     <string name="title_activity_search">Search All Toys</string>
     <string name="cancel_search">Cancel Search</string>
     <string name="complete_purchase">Purchase</string>
-    <string name="title_activity_purchase">PurchaseActivity</string>
+    <string name="title_activity_purchase">Shopping Cart</string>
+    <string name="overall_price">Overall Price</string>
+    <string name="toy_prices">$0.00</string>
     <string name= "goto_web">Get Map</string>
 </resources>
