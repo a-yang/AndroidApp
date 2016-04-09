@@ -86,16 +86,6 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(new Intent(this, PurchaseActivity.class).putExtra("toyList", shoppingCart));
     }
 
-    public  void weblink(View view){
-        goToUrl ( "http://googlemaps.com/");
-    }
-
-    private void goToUrl (String url) {
-        Uri uriUrl = Uri.parse(url);
-        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-        startActivity(launchBrowser);
-
-    }
 
     protected class MyDragEventListener implements View.OnDragListener {
 
