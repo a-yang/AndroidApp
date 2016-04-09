@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:textSize="10dp"
         android:text="N/A"
-        android:textColor="#00F"/>
+        android:textColor="#00F"
+        android:layout_marginLeft="10dp"/>
 
 </LinearLayout>

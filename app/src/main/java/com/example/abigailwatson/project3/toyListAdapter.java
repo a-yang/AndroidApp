@@ -7,7 +7,6 @@ package com.example.abigailwatson.project3;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -61,7 +60,9 @@ public class ToyListAdapter extends BaseAdapter {
         holder.price=(TextView) rowView.findViewById(R.id.toyPrice);
         holder.img=(ImageView) rowView.findViewById(R.id.toyImage);
         holder.name.setText(toyList.getToy(position).getToyName());
-        holder.price.setText(Integer.toString(toyList.getToy(position).getPrice()));
+        String priceView = "$";
+        priceView += Integer.toString(toyList.getToy(position).getPrice());
+        holder.price.setText(priceView);
         holder.img.setImageBitmap(toyList.getToy(position).getImage());
 
         return rowView;
