@@ -58,8 +58,10 @@ public class ToyListAdapter extends BaseAdapter {
         View rowView;
         rowView = inflater.inflate(R.layout.toy_listview, null);
         holder.name=(TextView) rowView.findViewById(R.id.toyName);
+        holder.price=(TextView) rowView.findViewById(R.id.toyPrice);
         holder.img=(ImageView) rowView.findViewById(R.id.toyImage);
         holder.name.setText(toyList.getToy(position).getToyName());
+        holder.price.setText(Integer.toString(toyList.getToy(position).getPrice()));
         holder.img.setImageBitmap(toyList.getToy(position).getImage());
 
         return rowView;
