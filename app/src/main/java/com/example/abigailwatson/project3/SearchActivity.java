@@ -1,6 +1,7 @@
 package com.example.abigailwatson.project3;
 
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -85,6 +86,16 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(new Intent(this, PurchaseActivity.class).putExtra("toyList", shoppingCart));
     }
 
+    public  void weblink(View view){
+        goToUrl ( "http://googlemaps.com/");
+    }
+
+    private void goToUrl (String url) {
+        Uri uriUrl = Uri.parse(url);
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchBrowser);
+
+    }
 
     protected class MyDragEventListener implements View.OnDragListener {
 
@@ -175,30 +186,6 @@ public class SearchActivity extends AppCompatActivity {
             }
             return toyList;
         }
-//            URL textUrl;
-//            ToyList toyList = new ToyList();
-//            try {
-//                textUrl = new URL(textSource);
-//                BufferedReader bufferReader = new BufferedReader(new InputStreamReader(textUrl.openStream()));
-//                String StringBuffer;
-//                String stringText = "";
-//                ToyList finalToyList = new ToyList();
-//                while ((StringBuffer = bufferReader.readLine())!=null) {
-//                    stringText = StringBuffer;
-//                    byte[] toydata = stringText.getBytes();
-//                    Toy toAdd = new Toy(toydata);
-//                    finalToyList.addToy(toAdd);
-//                }
-//
-//                bufferReader.close();
-//            } catch (MalformedURLException e) {
-//                //TODO Auto-generated catch block
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                //TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//            return toyList;
 
         private ByteArrayOutputStream readStream(BufferedInputStream is) {
             ByteArrayOutputStream bo = new ByteArrayOutputStream();
@@ -238,45 +225,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
-    /*
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        textPrompt = (TextView)findViewById(R.id.textprompt);
-        textMsg = (TextView)findViewById(R.id.textmsg);
-
-        textPrompt.setText("Wait...");
-
-        URL textUrl;
-        try {
-            textUrl = new URL(textSource);
-            BufferedReader bufferReader = new BufferedReader(new InputStreamReader(textUrl.openStream()));
-            String StringBuffer;
-            String stringText = "";
-            ToyList finalToyList = new ToyList();
-            while ((StringBuffer = bufferReader.readLine())!=null) {
-                stringText = StringBuffer;
-                byte[] toydata = stringText.getBytes();
-                Toy toAdd = new Toy(toydata);
-                finalToyList.addToy(toAdd);
-            }
-
-            bufferReader.close();
-            textMsg.setText(stringText);
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            textMsg.setText(e.toString());
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            textMsg.setText(e.toString());
-        }
-
-        textPrompt.setText("Finished!");
-
-    }*/
     }
 
 }
