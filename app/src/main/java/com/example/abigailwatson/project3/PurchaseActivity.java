@@ -10,12 +10,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AdapterView;
 
 public class PurchaseActivity extends AppCompatActivity {
 
     private ToyList purchases;
 
     ArrayList<String> toyNames = new ArrayList<String>();
+    ArrayAdapter<String> arrayAdapter;
 
     private ListView lv;
     private TextView tv;
@@ -28,7 +31,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
         for (int i = 0; i < purchases.getToyList().size(); i++) {
             String name = purchases.getToy(i).getToyName();
-            name += ", ";
+            name += ", $";
             name += Integer.toString(purchases.getToy(i).getPrice());
             toyNames.add(name);
         }
@@ -36,12 +39,27 @@ public class PurchaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_purchase);
 
         lv = (ListView) findViewById(R.id.toys_to_purchase);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
                 toyNames);
 
         lv.setAdapter(arrayAdapter);
+
+        lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                           int position, long arg3) {
+
+                // Can't manage to remove an item here
+                toyNames.remove(position);//where arg2 is position of item you click
+                updatePrice();
+                arrayAdapter.notifyDataSetChanged();
+
+                return false;
+            }
+        });
 
         tv = (TextView) findViewById(R.id.toy_prices);
         updatePrice();
@@ -55,8 +73,9 @@ public class PurchaseActivity extends AppCompatActivity {
         for (int i = 0; i < purchases.getToyList().size(); i++) {
             totalPrice += purchases.getToy(i).getPrice();
         }
-
-        tv.setText(Integer.toString(totalPrice));
+        String priceString = "$";
+        priceString += Integer.toString(totalPrice);
+        tv.setText(priceString);
     }
 
     public  void weblink(View view){
