@@ -80,7 +80,7 @@ public class PurchaseActivity extends AppCompatActivity {
     }
 
     public  void weblink(View view){
-        goToUrl("http://googlemaps.com/");
+        goToUrl("https://goo.gl/maps/DXdnjiBnzzR2");
     }
 
     private void goToUrl (String url) {
