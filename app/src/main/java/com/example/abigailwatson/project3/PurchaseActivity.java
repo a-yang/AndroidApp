@@ -89,4 +89,10 @@ public class PurchaseActivity extends AppCompatActivity {
         startActivity(launchBrowser);
 
     }
+
+    public void goToScreenTwo(View view) {
+        purchases.getToyList().clear();
+        finish();
+    }
+
 }
