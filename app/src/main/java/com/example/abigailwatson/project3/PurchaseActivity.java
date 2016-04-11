@@ -90,8 +90,8 @@ public class PurchaseActivity extends AppCompatActivity {
 
     }
 
-    public void goToScreenTwo(View view) {
-        purchases.getToyList().clear();
+    public void goToScreenOne(View view) {
+        setResult(1);
         finish();
     }
 
