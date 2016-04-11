@@ -53,11 +53,12 @@ public class PurchaseActivity extends AppCompatActivity {
                                            int position, long arg3) {
 
                 // Can't manage to remove an item here
+                purchases.getToyList().remove(position);
                 toyNames.remove(position);//where arg2 is position of item you click
                 updatePrice();
                 arrayAdapter.notifyDataSetChanged();
 
-                return false;
+                return true;
             }
         });
 
